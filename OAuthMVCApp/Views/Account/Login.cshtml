@@ -1,0 +1,34 @@
+﻿@using System.Web.Mvc.Html
+@model OAuthMVCApp.Models.LoginViewModel
+@using System.Configuration
+
+@if (bool.Parse(ConfigurationManager.AppSettings["UseOktaOAuth"]))
+{
+    <p>Redirecting to OKTA for authentication...</p>
+}
+else
+{
+    @using (Html.BeginForm("Login", "Account", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+
+        <div style="margin-bottom: 15px;">
+            <label>Username:</label>
+            @Html.TextBoxFor(m => m.Username, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Username)
+        </div>
+
+        <div style="margin-bottom: 15px;">
+            <label>Password:</label>
+            @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Password)
+        </div>
+
+        <div>
+            <input type="submit" value="Login" class="btn btn-primary" />
+        </div>
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    }
+}
+
